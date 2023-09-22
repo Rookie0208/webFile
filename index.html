@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Translator</title>
+</head>
+<body>
+  <h1>Text Translator</h1>
+
+  <!-- Input field for entering text to translate -->
+  <textarea id="inputText" placeholder="Enter text to translate"></textarea>
+
+  <!-- Select dropdown for choosing the target language -->
+  <label for="targetLanguage">Select Target Language:</label>
+  <select id="targetLanguage">
+    <option value="pt">Portuguese</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <!-- Add more languages as needed -->
+  </select>
+
+  <!-- Button to trigger language detection and translation -->
+  <!-- <button onclick="detectLanguageAndTranslate()">Translate</button> -->
+  <button onclick="translateText()">Translate</button>
+
+  <!-- Display language detection and translated text -->
+  <h2>Language Detection:</h2>
+  <p id="languageDetectionResult"></p>
+  
+  <h2>Translation:</h2>
+  <p id="translationResult"></p>
+
+  <script>
+    async function translateText() {
+      const inputText = document.getElementById('inputText').value;
+      const targetLanguage = document.getElementById('targetLanguage').value;
+
+      const url = 'https://google-translate1.p.rapidapi.com/language/translate/v2';
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept-Encoding': 'application/gzip',
+          'X-RapidAPI-Key': '5e5cd86f6bmsh8f35caa9d4e8adfp1167a9jsn146cb7ebe412',
+          'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com',
+        },
+        body: new URLSearchParams({
+          q: inputText,
+          target: targetLanguage,
+          source: 'en', // You can set the source language here
+        }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const result = await response.text();
+        document.getElementById('translationResult').textContent = result;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
